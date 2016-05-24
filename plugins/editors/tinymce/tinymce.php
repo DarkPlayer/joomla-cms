@@ -865,7 +865,7 @@ class PlgEditorTinymce extends JPlugin
 			extended_valid_elements : \"$elements\",
 			invalid_elements : \"$invalid_elements\",
 			// Plugins
-			plugins : \"table link image code hr charmap autolink lists importcss $dragDropPlg\",
+			plugins : \"table link anchor image code hr charmap autolink lists importcss $dragDropPlg\",
 			// Toolbar
 			toolbar1: \"$toolbar1 | $toolbar5\",
 			removed_menuitems: \"newdocument\",
