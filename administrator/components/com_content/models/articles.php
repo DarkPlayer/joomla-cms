@@ -40,6 +40,7 @@ class ContentModelArticles extends JModelList
 				'created', 'a.created',
 				'created_by', 'a.created_by',
 				'created_by_alias', 'a.created_by_alias',
+				'modified', 'a.modified',
 				'ordering', 'a.ordering',
 				'featured', 'a.featured',
 				'language', 'a.language',
@@ -173,7 +174,7 @@ class ContentModelArticles extends JModelList
 			$this->getState(
 				'list.select',
 				'a.id, a.title, a.alias, a.checked_out, a.checked_out_time, a.catid' .
-					', a.state, a.access, a.created, a.created_by, a.created_by_alias, a.ordering, a.featured, a.language, a.hits' .
+					', a.state, a.access, a.created, a.created_by, a.created_by_alias, a.modified, a.ordering, a.featured, a.language, a.hits' .
 					', a.publish_up, a.publish_down'
 			)
 		);
