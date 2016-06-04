@@ -32,7 +32,9 @@ $dispatcher = JEventDispatcher::getInstance();
 		</td>
 
 		<td class="description"  title="<?php echo $doc->name; ?>">
+			<a href="<?php echo COM_MEDIA_BASEURL . '/' . $doc->path_relative; ?>" target="_blank">
 			<?php echo $doc->title; ?>
+			</a>
 		</td>
 
 		<td>&#160;</td>
