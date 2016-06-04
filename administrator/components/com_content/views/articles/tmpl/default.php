@@ -96,6 +96,9 @@ $assoc = JLanguageAssociations::isEnabled();
 						<th width="10%" class="nowrap hidden-phone">
 							<?php echo JHtml::_('searchtools.sort', 'COM_CONTENT_HEADING_DATE_' . strtoupper($orderingColumn), 'a.' . $orderingColumn, $listDirn, $listOrder); ?>
 						</th>
+						<th width="10%" class="nowrap hidden-phone">
+							<?php echo JHtml::_('searchtools.sort', 'COM_CONTENT_HEADING_DATE_MODIFIED', 'a.modified', $listDirn, $listOrder); ?>
+						</th>
 						<th width="1%" class="nowrap hidden-phone">
 							<?php echo JHtml::_('searchtools.sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?>
 						</th>
@@ -219,6 +222,11 @@ $assoc = JLanguageAssociations::isEnabled();
 							$date = $item->{$orderingColumn};
 							echo $date > 0 ? JHtml::_('date', $date, JText::_('DATE_FORMAT_LC4')) : '-';
 							?>
+						</td>
+						<td class="nowrap small hidden-phone">
+							<?php if ($item->modified != '0000-00-00 00:00:00') : ?>
+								<?php echo JHtml::_('date', $item->modified, JText::_('DATE_FORMAT_LC4')); ?>
+							<?php endif; ?>
 						</td>
 						<td class="hidden-phone center">
 							<span class="badge badge-info">
