@@ -33,7 +33,9 @@ $dispatcher = JEventDispatcher::getInstance();
 		</div>
 
 		<div class="small" title="<?php echo $doc->name; ?>" >
+			<a href="<?php echo COM_MEDIA_BASEURL . '/' . $doc->path_relative; ?>" target="_blank">
 			<?php echo JHtml::_('string.truncate', $doc->name, 10, false); ?>
+			</a>
 		</div>
 	</li>
 	<?php $dispatcher->trigger('onContentAfterDisplay', array('com_media.file', &$doc, &$params)); ?>
