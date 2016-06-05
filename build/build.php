@@ -37,7 +37,7 @@ require_once dirname(__DIR__) . '/libraries/cms/version/version.php';
 $version     = JVersion::RELEASE;
 $release     = JVersion::DEV_LEVEL;
 $stability   = JVersion::DEV_STATUS;
-$fullVersion = $version . '.' . $release;
+$fullVersion = "HEAD";
 
 // Shortcut the paths to the repository root and build folder
 $repo = dirname(__DIR__);
@@ -138,7 +138,7 @@ for ($num = $release - 1; $num >= 0; $num--)
 
 	// Here we get a list of all files that have changed between the two tags ($previousTag and $fullVersion) and save in diffdocs
 	$previousTag = $version . '.' . $num;
-	$command     = $systemGit . ' diff tags/' . $previousTag . ' tags/' . $fullVersion . ' --name-status > diffdocs/' . $version . '.' . $num;
+	$command     = $systemGit . ' diff ' . $previousTag . ' ' . $fullVersion . ' --name-status -- > diffdocs/' . $version . '.' . $num;
 
 	system($command);
 
