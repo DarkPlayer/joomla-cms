@@ -53,8 +53,23 @@ class PlgButtonArticle extends JPlugin
 				{
 					var hreflang = ' hreflang = \"' + lang + '\"';
 				}
-				var tag = '<a' + hreflang + ' href=\"' + link + '\">' + title + '</a>';
-				jInsertEditorText(tag, '" . $name . "');
+				var selectedElm = tinyMCE.activeEditor.selection.getNode();
+				var anchorElm = tinyMCE.activeEditor.dom.getParent(selectedElm, 'a[href]')
+				if (anchorElm)
+				{
+					var linkAttrs = {
+						href: link
+					};
+					tinyMCE.activeEditor.dom.setAttribs(anchorElm, linkAttrs);
+					tinyMCE.activeEditor.selection.select(anchorElm);
+				}
+				else
+				{
+					var selected = tinyMCE.activeEditor.selection.getContent();
+					if (selected) title = selected;
+					var tag = '<a' + hreflang + ' href=\"' + link + '\">' + title + '</a>';
+					jInsertEditorText(tag, '" . $name . "');
+				}
 				jModalClose();
 			}";
 
