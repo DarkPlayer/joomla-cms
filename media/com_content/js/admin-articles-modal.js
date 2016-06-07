@@ -26,12 +26,26 @@
 			hreflang = ' hreflang="' + lang + '"';
 		}
 
-		tag = '<a' + hreflang + ' href="' + link + '">' + title + '</a>';
-
 		/** Use the API, if editor supports it **/
 		if (window.parent.Joomla && window.parent.Joomla.editors && window.parent.Joomla.editors.instances && window.parent.Joomla.editors.instances.hasOwnProperty(editor)) {
-			window.parent.Joomla.editors.instances[editor].replaceSelection(tag)
+			var current_editor = window.parent.Joomla.editors.instances[editor].instance;
+			var selected_elem = current_editor.selection.getNode();
+			var anchor_elem = current_editor.dom.getParent(selected_elem, 'a[href]')
+			if (anchor_elem)
+			{
+				var linkAttrs = { href: link };
+				current_editor.dom.setAttribs(anchor_elem, linkAttrs);
+				current_editor.selection.select(anchor_elem);
+			}
+			else
+			{
+				var selected = current_editor.selection.getContent();
+				if (selected) title = selected;
+				tag = '<a' + hreflang + ' href="' + link + '">' + title + '</a>';
+				window.parent.Joomla.editors.instances[editor].replaceSelection(tag);
+			}
 		} else {
+			tag = '<a' + hreflang + ' href="' + link + '">' + title + '</a>';
 			window.parent.jInsertEditorText(tag, editor);
 		}
 
