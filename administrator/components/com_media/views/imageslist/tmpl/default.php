@@ -30,7 +30,7 @@ JFactory::getDocument()->addStyleDeclaration(
 	"
 );
 ?>
-<?php if (count($this->images) > 0 || count($this->folders) > 0) : ?>
+<?php if (count($this->images) > 0 || count($this->folders) > 0 || count($this->documents) > 0) : ?>
 	<ul class="manager thumbnails">
 		<?php for ($i = 0, $n = count($this->folders); $i < $n; $i++) :
 			$this->setFolder($i);
@@ -40,6 +40,11 @@ JFactory::getDocument()->addStyleDeclaration(
 		<?php for ($i = 0, $n = count($this->images); $i < $n; $i++) :
 			$this->setImage($i);
 			echo $this->loadTemplate('image');
+		endfor; ?>
+
+		<?php for ($i = 0, $n = count($this->documents); $i < $n; $i++) :
+			$this->setDoc($i);
+			echo $this->loadTemplate('doc');
 		endfor; ?>
 	</ul>
 <?php else : ?>

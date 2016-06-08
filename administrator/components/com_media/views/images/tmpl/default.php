@@ -68,7 +68,7 @@ JFactory::getDocument()->addScriptDeclaration(
 			<div class="row">
 				<div class="span6 control-group">
 					<div class="control-label">
-						<label for="f_url"><?php echo JText::_('COM_MEDIA_IMAGE_URL') ?></label>
+						<label for="f_url"><?php echo JText::_('COM_MEDIA_URL') ?></label>
 					</div>
 					<div class="controls">
 						<input type="text" id="f_url" value="" />
