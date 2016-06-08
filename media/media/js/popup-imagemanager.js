@@ -55,6 +55,9 @@
 			{
 				ImageManager.upFolder();
 			});
+
+			this.is_image = true;
+			this.filename = "";
 		},
 
 		/**
@@ -118,45 +121,77 @@
 
 			if (url)
 			{
-				// Set alt attribute
-				attr.push('alt="' + alt + '"');
-
-				// Set align attribute
-				if (align && !caption)
+				if (this.is_image)
 				{
-					attr.push('class="pull-' + align + '"');
-				}
+					// Set alt attribute
+					attr.push('alt="' + alt + '"');
 
-				// Set title attribute
-				if (title)
-				{
-					attr.push('title="' + title + '"');
-				}
-
-				tag = '<img src="' + url + '" ' + attr.join(' ') + '/>';
-
-				// Process caption
-				if (caption)
-				{
-					if (align)
+					// Set align attribute
+					if (align && !caption)
 					{
-						figclass = ' class="pull-' + align + '"';
+						attr.push('class="pull-' + align + '"');
 					}
 
-					if (c_class)
+					// Set title attribute
+					if (title)
 					{
-						captionclass = ' class="' + c_class + '"';
+						attr.push('title="' + title + '"');
 					}
 
-					tag = '<figure' + figclass + '>' + tag + '<figcaption' + captionclass + '>' + caption + '</figcaption></figure>';
-				}
-			}
+					tag = '<img src="' + url + '" ' + attr.join(' ') + '/>';
 
-			/** Use the API, if editor supports it **/
-			if (window.Joomla && Joomla.editors.instances.hasOwnProperty(this.editor)) {
-				Joomla.editors.instances[editor].replaceSelection(tag)
-			} else {
-				window.parent.jInsertEditorText(tag, this.editor);
+					// Process caption
+					if (caption)
+					{
+						if (align)
+						{
+							figclass = ' class="pull-' + align + '"';
+						}
+
+						if (c_class)
+						{
+							captionclass = ' class="' + c_class + '"';
+						}
+
+						tag = '<figure' + figclass + '>' + tag + '<figcaption' + captionclass + '>' + caption + '</figcaption></figure>';
+					}
+
+					/** Use the API, if editor supports it **/
+					if (window.Joomla && Joomla.editors.instances.hasOwnProperty(this.editor)) {
+						Joomla.editors.instances[editor].replaceSelection(tag)
+					} else {
+						window.parent.jInsertEditorText(tag, this.editor);
+					}
+
+				}
+				else
+				{
+					var current_editor = window.parent.Joomla.editors.instances[this.editor].instance;
+					var selected_elem = current_editor.selection.getNode();
+					var link_elem = current_editor.dom.getParent(selected_elem, 'a[href]')
+					if (link_elem)
+					{
+						var linkAttrs = { href: url };
+						current_editor.dom.setAttribs(link_elem, linkAttrs);
+						current_editor.selection.select(link_elem);
+					}
+					else
+					{
+						var selected = current_editor.selection.getContent();
+						if (selected)
+							title = selected;
+						else
+							title = this.filename;
+						tag = '<a href=\"' + url + '\">' + title + '</a>';
+
+						/** Use the API, if editor supports it **/
+						if (window.Joomla && Joomla.editors.instances.hasOwnProperty(this.editor)) {
+							Joomla.editors.instances[editor].replaceSelection(tag)
+						} else {
+							window.parent.jInsertEditorText(tag, this.editor);
+						}
+					}
+				}
 			}
 
 			return true;
@@ -209,6 +244,36 @@
 			this.setFrameUrl(search);
 		},
 
+		showImageFields : function(visible)
+		{
+			if (visible)
+			{
+				$("#f_alt").show();
+				$('label[for="f_alt"]').show();
+				$("#f_align_chzn").show();
+				$('label[for="f_align"]').show();
+				$("#f_title").show();
+				$('label[for="f_title"]').show();
+				$("#f_caption").show();
+				$('label[for="f_caption"]').show();
+				$("#f_caption_class").show();
+				$('label[for="f_caption_class"]').show();
+			}
+			else
+			{
+				$("#f_alt").hide();
+				$('label[for="f_alt"]').hide();
+				$("#f_align_chzn").hide();
+				$('label[for="f_align"]').hide();
+				$("#f_title").hide();
+				$('label[for="f_title"]').hide();
+				$("#f_caption").hide();
+				$('label[for="f_caption"]').hide();
+				$("#f_caption_class").hide();
+				$('label[for="f_caption_class"]').hide();
+			}
+		},
+
 		/**
 		 * Called from outside when a file is selected
 		 *
@@ -216,17 +281,43 @@
 		 *
 		 * @return  void
 		 */
-		populateFields: function (file)
+		setImage: function (path, filename)
 		{
-		    $.each($('a.img-preview', $('#imageframe').contents()), function(i, v) {
-			if (v.href == "javascript:ImageManager.populateFields('" + file + "')") {
-			    $(v, $('#imageframe').contents()).addClass('selected');
+			$.each($('a.img-preview', $('#imageframe').contents()), function(i, v) {
+			if (v.href == "javascript:ImageManager.setImage('" + path + "','" + filename + "')") {
+				$(v, $('#imageframe').contents()).addClass('selected');
 			} else {
-			    $(v, $('#imageframe').contents()).removeClass('selected');
+				$(v, $('#imageframe').contents()).removeClass('selected');
 			}
-		    });
+			});
 
-		    $("#f_url").val(image_base_path + file);
+			$("#f_url").val(image_base_path + path);
+			this.filename = filename;
+			this.is_image = true;
+			this.showImageFields(true);
+		},
+
+		/**
+		 * Called from outside when a file is selected
+		 *
+		 * @param   string  file  Relative path to the file.
+		 *
+		 * @return  void
+		 */
+		setDocument: function (path, filename)
+		{
+			$.each($('a.img-preview', $('#imageframe').contents()), function(i, v) {
+			if (v.href == "javascript:ImageManager.setDocument('" + path + "','" + filename + "')") {
+				$(v, $('#imageframe').contents()).addClass('selected');
+			} else {
+				$(v, $('#imageframe').contents()).removeClass('selected');
+			}
+			});
+
+			$("#f_url").val(image_base_path + path);
+			this.filename = filename;
+			this.is_image = false;
+			this.showImageFields(false);
 		},
 
 		/**

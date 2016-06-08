@@ -30,14 +30,16 @@ class MediaViewImagesList extends JViewLegacy
 		// Do not allow cache
 		JFactory::getApplication()->allowCache(false);
 
-		$images  = $this->get('images');
-		$folders = $this->get('folders');
-		$state   = $this->get('state');
+		$images    = $this->get('images');
+		$documents = $this->get('documents');
+		$folders   = $this->get('folders');
+		$state     = $this->get('state');
 
-		$this->baseURL = COM_MEDIA_BASEURL;
-		$this->images  = &$images;
-		$this->folders = &$folders;
-		$this->state   = &$state;
+		$this->baseURL   = COM_MEDIA_BASEURL;
+		$this->images    = &$images;
+		$this->documents = &$documents;
+		$this->folders   = &$folders;
+		$this->state     = &$state;
 
 		parent::display($tpl);
 	}
@@ -81,6 +83,27 @@ class MediaViewImagesList extends JViewLegacy
 		else
 		{
 			$this->_tmp_img = new JObject;
+		}
+	}
+
+	/**
+	 * Set the active doc
+	 *
+	 * @param   integer  $index  Doc position
+	 *
+	 * @return  void
+	 *
+	 * @since   1.0
+	 */
+	public function setDoc($index = 0)
+	{
+		if (isset($this->documents[$index]))
+		{
+			$this->_tmp_doc = &$this->documents[$index];
+		}
+		else
+		{
+			$this->_tmp_doc = new JObject;
 		}
 	}
 }
